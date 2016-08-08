@@ -72,7 +72,7 @@ func grepHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Render the template
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if err := templates.ExecuteTemplate(w, "grep-dictifonary.html", data); err != nil {
+	if err := templates.ExecuteTemplate(w, "grep-dictionary.html", data); err != nil {
 		log.Errorf(ctx, "%v", err)
 	}
 }
