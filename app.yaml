@@ -1,0 +1,11 @@
+runtime: go
+api_version: go1
+application: grep-dictionary
+
+handlers:
+- url: /grep-dictionary/README_en_GB-large.txt
+  static_files: README_en_GB-large.txt
+  upload: README_en_GB-large\.txt
+- url: /.*
+  script: _go_app
+  secure: always
