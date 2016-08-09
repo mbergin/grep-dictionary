@@ -73,7 +73,7 @@ func grepHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Render the template
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.Header().Set("Cache-Control", "max-age: 86400")
+	w.Header().Set("Cache-Control", "public, max-age: 86400")
 	w.Header().Set("Etag", fmt.Sprintf("%v", appengine.VersionID(ctx)))
 	if err := templates.ExecuteTemplate(w, "grep-dictionary.html", data); err != nil {
 		log.Errorf(ctx, "%v", err)
