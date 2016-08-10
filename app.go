@@ -21,17 +21,26 @@ func init() {
 	http.Handle("/", handlers.CompressHandler(http.HandlerFunc(grepHandler)))
 }
 
+type match struct {
+	Before string
+	Match  string
+	After  string
+}
+
 // grepDictionary filters words by the regular expression pattern.
 // It returns an error if the regular expression is not valid.
-func grepDictionary(pattern string, words []string) ([]string, error) {
+func grepDictionary(pattern string, words []string) ([]match, error) {
 	re, err := regexp.Compile(pattern)
 	if err != nil {
 		return nil, err
 	}
-	var matches []string
+	var matches []match
 	for _, word := range words {
-		if re.MatchString(word) {
-			matches = append(matches, word)
+		if loc := re.FindStringIndex(word); loc != nil {
+			m := match{Before: word[:loc[0]],
+				Match: word[loc[0]:loc[1]],
+				After: word[loc[1]:]}
+			matches = append(matches, m)
 		}
 	}
 	return matches, nil
@@ -56,13 +65,15 @@ func grepHandler(w http.ResponseWriter, r *http.Request) {
 	pattern := r.URL.Query().Get("pattern")
 
 	data := struct {
-		Pattern string
-		Matches []string
-		Error   string
+		Pattern   string
+		Matches   []match
+		Error     string
+		Highlight bool
 	}{
-		Pattern: pattern,
-		Matches: nil,
-		Error:   "",
+		Pattern:   pattern,
+		Matches:   nil,
+		Error:     "",
+		Highlight: r.URL.Query().Get("highlight") == "on",
 	}
 
 	// If pattern is present, search the word list

@@ -14,9 +14,15 @@
         <form action="/" method="GET">
             <div class="form-group{{if .Error}} has-error{{end}}">
                 <label for="pattern">Pattern</label>
-                <input class="form-control" id="pattern" name="pattern" type="search" required autofocus value="{{.Pattern}}">                {{if .Error}}
-                <p class="help-block">{{.Error}}</p>{{end}}
+                <input class="form-control" id="pattern" name="pattern" type="search" required autofocus value="{{.Pattern}}">
+                {{if .Error}}<p class="help-block">{{.Error}}</p>{{end}}
                 <p class="help-block"><a href="https://golang.org/pkg/regexp/syntax/">regular expression syntax</a></p>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input id="highlight" name="highlight" type="checkbox" checked>
+                    Highlight matches
+                </label>
             </div>
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
@@ -25,7 +31,7 @@
         {{if .Matches}}
         <ul class="list-group">
             {{range .Matches}}
-            <li class="list-group-item">{{.}}</li>{{end}}
+            <li class="list-group-item">{{.Before}}{{if $.Highlight}}<strong style="background: yellow;">{{.Match}}</strong>{{else}}{{.Match}}{{end}}{{.After}}</li>{{end}}
         </ul>
         {{else}}
         <p><strong>No matches</strong></p>
