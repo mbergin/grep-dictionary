@@ -65,15 +65,17 @@ func grepHandler(w http.ResponseWriter, r *http.Request) {
 	pattern := r.URL.Query().Get("pattern")
 
 	data := struct {
-		Pattern   string
-		Matches   []match
-		Error     string
-		Highlight bool
+		Pattern    string
+		Matches    []match
+		Error      string
+		Highlight  bool
+		TotalWords int
 	}{
-		Pattern:   pattern,
-		Matches:   nil,
-		Error:     "",
-		Highlight: r.URL.Query().Get("highlight") == "on",
+		Pattern:    pattern,
+		Matches:    nil,
+		Error:      "",
+		Highlight:  r.URL.Query().Get("highlight") == "on",
+		TotalWords: len(words),
 	}
 
 	// If pattern is present, search the word list

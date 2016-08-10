@@ -33,6 +33,7 @@
             {{range .Matches}}
             <li class="list-group-item">{{.Before}}{{if $.Highlight}}<strong style="background: yellow;">{{.Match}}</strong>{{else}}{{.Match}}{{end}}{{.After}}</li>{{end}}
         </ul>
+        <p>{{.Matches | len}} matched out of {{.TotalWords}} words.</p>
         {{else}}
         <p><strong>No matches</strong></p>
         {{end}} {{end}} {{end}}
