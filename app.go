@@ -52,16 +52,20 @@ func grepHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Get pattern from query string
+	pattern := r.URL.Query().Get("pattern")
+
 	data := struct {
+		Pattern string
 		Matches []string
 		Error   string
 	}{
+		Pattern: pattern,
 		Matches: nil,
 		Error:   "",
 	}
 
 	// If pattern is present, search the word list
-	pattern := r.URL.Query().Get("pattern")
 	if pattern != "" {
 		matches, err := grepDictionary(pattern, words)
 		if err == nil {

@@ -1,26 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Grep dictionary</title>
-    </head>
-    <body>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <title>{{if .Pattern}}{{.Pattern}}: {{end}}Grep dictionary</title>
+</head>
+
+<body>
+    <div class="container">
         <h1>Grep dictionary</h1>
         <form action="/" method="GET">
-            <label>Pattern (<a href="https://golang.org/pkg/regexp/syntax/">regular expression</a>)
-            <input name="pattern" type="search" required autofocus>
-            <button type="submit">Search</button>
+            <div class="form-group{{if .Error}} has-error{{end}}">
+                <label for="pattern">Pattern</label>
+                <input class="form-control" id="pattern" name="pattern" type="search" required autofocus value="{{.Pattern}}">                {{if .Error}}
+                <p class="help-block">{{.Error}}</p>{{end}}
+                <p class="help-block"><a href="https://golang.org/pkg/regexp/syntax/">regular expression syntax</a></p>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
         </form>
-        {{if .Error}}
-        <p>{{.Error}}</p>
-        {{end}}
-        <ol>
+        {{if .Error | not}} {{if .Pattern}}
+        <h2>Results for {{.Pattern}}</h2>
+        {{if .Matches}}
+        <ul class="list-group">
             {{range .Matches}}
-            <li>{{.}}</li>
-            {{end}}
-        </ol>
-        <footer><ul>
+            <li class="list-group-item">{{.}}</li>{{end}}
+        </ul>
+        {{else}}
+        <p><strong>No matches</strong></p>
+        {{end}} {{end}} {{end}}
+        <hr />
+        <ul class="nav nav-pills">
             <li><a href="/grep-dictionary/README_en_GB-large.txt">Word list information</a></li>
             <li><a href="https://github.com/mbergin/grep-dictionary">Source code</a></li>
-        </ul></footer>
-    </body>
+        </ul>
+    </div>
+
+</body>
+
 </html>
